@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LookupSystem.DataAccess", "LookupSystem.DataAccess\LookupSystem.DataAccess.csproj", "{14F1F421-71D3-4863-8025-1140DBA42D1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LookupSystemService", "LookupSystemService\LookupSystemService.csproj", "{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14F1F421-71D3-4863-8025-1140DBA42D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14F1F421-71D3-4863-8025-1140DBA42D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14F1F421-71D3-4863-8025-1140DBA42D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14F1F421-71D3-4863-8025-1140DBA42D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5941DC38-3384-42B2-B554-120988C766C4}
+	EndGlobalSection
+EndGlobal
