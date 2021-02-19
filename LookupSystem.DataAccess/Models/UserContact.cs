@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LookupSystemService.Models
+namespace LookupSystem.DataAccess.Models
 {
     public class UserContact
     {

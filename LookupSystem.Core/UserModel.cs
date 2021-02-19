@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LookupSystemService.Models
+namespace LookupSystem.Core
 {
-    public class UserViewModel
+    public class UserModel
     {
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
