@@ -69,5 +69,26 @@ namespace LookupSystem.DataAccess.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public IEnumerable<User> GetUserByEmail(string email)
+        {
+            var user = db.Users                
+                .Include(c => c.UserContact)
+                .Where(u => u.UserContact.Email.ToUpper() == email.ToUpper())
+                .ToList();
+
+            return user;
+        } 
+        
+        public IEnumerable<User> GetUserByPhone(string phone)
+        {
+            var user = db.Users                
+                .Include(c => c.UserContact)
+                .Where(u => u.UserContact.Phone.ToUpper() == phone.ToUpper())
+                .ToList();
+
+            return user;
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LookupSystem.DataAccess.Interfaces
@@ -11,5 +12,9 @@ namespace LookupSystem.DataAccess.Interfaces
         void Update(T item);
         void Delete(int id);
         void Save();
+
+        IEnumerable<T> GetUserByEmail(string email);
+
+        IEnumerable<T> GetUserByPhone(string phone);
     }
 }

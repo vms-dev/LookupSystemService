@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LookupSystem.Business\LookupSystem.Business.csproj" />
-    <ProjectReference Include="..\LookupSystem.Core\LookupSystem.Core.csproj" />
     <ProjectReference Include="..\LookupSystem.DataAccess\LookupSystem.DataAccess.csproj" />
   </ItemGroup>
 
