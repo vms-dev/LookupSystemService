@@ -70,13 +70,60 @@ namespace LookupSystemService.Controllers
                 return new List<PhoneSearchUserViewModel>();
             }
         }
+
+
+        [HttpGet("GetHiredUsers")]
+        public IEnumerable<HiredUserViewModel> GetHiredUsers()
+        {
+            try
+            {
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<User, HiredUserViewModel>()
+                .ForMember("Name", opt => opt.MapFrom(m => $"{m.UserContact.FirstName} {m.UserContact.LastName}"))
+                .ForMember("CreatedDate", opt => opt.MapFrom(m => m.CreatedDate.ToShortDateString()))
+                .ForMember("DeleteDate", opt => opt.MapFrom(m => m.DeleteDate.HasValue ? m.DeleteDate.Value.ToShortDateString() : null))
+                .ForMember("Hired", opt => opt.MapFrom(m => m.Hired))
+                .ForMember("ManagerId", opt => opt.MapFrom(m => m.ManagerId))
+                .ForMember("Phone", opt => opt.MapFrom(m => m.UserContact.Phone))
+                .ForMember("MobilePhone", opt => opt.MapFrom(m => m.UserContact.MobilePhone))
+                .ForMember("Email", opt => opt.MapFrom(m => m.UserContact.Email)));
+
+                var mapper = new Mapper(config);
+                var users = mapper.Map<List<HiredUserViewModel>>(userRepo.GetHiredUsers());
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<HiredUserViewModel>();
+            }
+        }
+
+
+        [HttpGet("GetIdledUsers")]
+        public IEnumerable<HiredUserViewModel> GetIdledUsers()
+        {
+            try
+            {
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<User, HiredUserViewModel>()
+                .ForMember("Name", opt => opt.MapFrom(m => $"{m.UserContact.FirstName} {m.UserContact.LastName}"))
+                .ForMember("CreatedDate", opt => opt.MapFrom(m => m.CreatedDate.ToShortDateString()))
+                .ForMember("DeleteDate", opt => opt.MapFrom(m => m.DeleteDate.HasValue ? m.DeleteDate.Value.ToShortDateString() : null))
+                .ForMember("Hired", opt => opt.MapFrom(m => m.Hired))
+                .ForMember("ManagerId", opt => opt.MapFrom(m => m.ManagerId))
+                .ForMember("Phone", opt => opt.MapFrom(m => m.UserContact.Phone))
+                .ForMember("MobilePhone", opt => opt.MapFrom(m => m.UserContact.MobilePhone))
+                .ForMember("Email", opt => opt.MapFrom(m => m.UserContact.Email)));
+
+                var mapper = new Mapper(config);
+                var users = mapper.Map<List<HiredUserViewModel>>(userRepo.GetIdledUsers());
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<HiredUserViewModel>();
+            }
+        }
+
     }
 }
-
-/*
-         public string Name { get; set; }
-        public string Phone { get; set; }
-        public string MobilePhone { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
- */

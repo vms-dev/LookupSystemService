@@ -88,7 +88,25 @@ namespace LookupSystem.DataAccess.Repositories
                 .ToList();
 
             return user;
+        }     
+        
+        public IEnumerable<User> GetHiredUsers()
+        {
+            var user = db.Users                
+                .Include(c => c.UserContact)
+                .Where(u => u.Hired)
+                .ToList();
+
+            return user;
         }
 
+        public IEnumerable<User> GetIdledUsers()
+        {
+            var user = db.Users
+                .Where(u => !u.Hired)
+                .ToList();
+
+            return user;
+        }
     }
 }

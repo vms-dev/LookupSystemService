@@ -22,5 +22,10 @@ namespace LookupSystem.DataAccess.Data
             //modelBuilder.Entity<User>();
             //modelBuilder.Entity<UserContact>();
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
     }
 }

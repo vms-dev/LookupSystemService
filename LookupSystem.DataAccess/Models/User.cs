@@ -17,6 +17,6 @@ namespace LookupSystem.DataAccess.Models
         
         public Guid? ManagerId { get; set; }
 
-        public UserContact UserContact { get; set; }
+        public virtual UserContact UserContact { get; set; }
     }
 }
