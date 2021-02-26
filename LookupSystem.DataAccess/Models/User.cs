@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LookupSystem.DataAccess.Models
 {
@@ -7,15 +6,14 @@ namespace LookupSystem.DataAccess.Models
     {
         public Guid Id { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime CreatedDate { get; set; }
-        
-        [Column(TypeName = "datetime2")]        
+
         public DateTime? DeleteDate { get; set; }
-        
-        public bool Hired { get; set; }
-        
+
+        public bool Fired { get; set; }
+
         public Guid? ManagerId { get; set; }
+
 
         public virtual UserContact UserContact { get; set; }
     }

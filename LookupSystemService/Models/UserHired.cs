@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LookupSystemService.Models
 {
-    public class UserViewModel
+    public class UserHired
     {
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? DeleteDate { get; set; }
-        public bool Hired { get; set; }
+        public bool Fired { get; set; }
         public Guid? ManagerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

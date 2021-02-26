@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using LookupSystem.DataAccess.Data;
+using LookupSystem.DataAccess.Interfaces;
+using LookupSystem.DataAccess.Models;
+using LookupSystem.DataAccess.Repositories;
+using LookupSystemService.Mappings;
 
 namespace LookupSystemService
 {
@@ -27,11 +31,18 @@ namespace LookupSystemService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LookupSystemService", Version = "v1" });
             });
-
+            
+            services.AddAutoMapper(typeof(MappingProfile)); 
+            
             services.AddDbContext<LookupSystemDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LookupSystemDbContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-
-            //ervices.AddScoped<IUserService, UserService>();
+            
+            services.AddTransient<IRepository<User>>(provider => {
+                var context  = provider.GetService<LookupSystemDbContext>();
+                return new UserRepository(context);;
+            });
+            
+            //services.AddScoped<IUserService, UserService>();
             //services.AddTransient<IUserService, UserService>();
         }
 

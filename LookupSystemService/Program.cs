@@ -1,13 +1,9 @@
 using LookupSystem.DataAccess.Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LookupSystemService
 {
@@ -38,7 +34,7 @@ namespace LookupSystemService
                 {
                     var context = services.GetRequiredService<LookupSystemDbContext>();
                     //context.Database.EnsureCreated();
-                    DbInitializer.Initialize(context);
+                    DbInitializer.InitializeV2(context);
                 }
                 catch (Exception ex)
                 {

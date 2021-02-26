@@ -5,60 +5,58 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LookupSystem.DataAccess.Repositories
 {
     public class UserRepository : IRepository<User>
     {
-        private LookupSystemDbContext db;
-        public UserRepository(LookupSystemDbContext contex)
+        private readonly LookupSystemDbContext _db;
+        public UserRepository(LookupSystemDbContext context)
         {
             //db = new UserContext();
-            db = contex;
+            _db = context;
         }
         public IQueryable<User> GetAll()
         {
-            return db.Users;
+            return _db.Users;
         }
 
         public User Get(int id)
         {
-            return db.Users.Find(id);
+            return _db.Users.Find(id);
         }
 
         public void Create(User item)
         {
-            db.Users.Add(item);
+            _db.Users.Add(item);
         }
 
         public void Update(User item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            _db.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            User user = db.Users.Find(id);
+            User user = _db.Users.Find(id);
             if (user != null)
-                db.Users.Remove(user);
+                _db.Users.Remove(user);
         }
 
         public void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
 
         private bool disposed = false;
 
-        public virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    _db.Dispose();
                 }
             }
             this.disposed = true;
@@ -72,41 +70,34 @@ namespace LookupSystem.DataAccess.Repositories
 
         public IEnumerable<User> GetUserByEmail(string email)
         {
-            var user = db.Users                
-                .Include(c => c.UserContact)
-                .Where(u => u.UserContact.Email.ToUpper() == email.ToUpper())
-                .ToList();
-
-            return user;
+            var query = _db.Users.Include(c => c.UserContact)
+                .Where(u => string.Compare(u.UserContact.Email, email, StringComparison.OrdinalIgnoreCase) == 0);
+            
+            return query.ToList();
         } 
         
         public IEnumerable<User> GetUserByPhone(string phone)
         {
-            var user = db.Users                
-                .Include(c => c.UserContact)
-                .Where(u => u.UserContact.Phone.ToUpper() == phone.ToUpper())
-                .ToList();
+            var query = _db.Users.Include(c => c.UserContact)
+                .Where(u => string.Compare(u.UserContact.Phone, phone, StringComparison.OrdinalIgnoreCase) == 0);
 
-            return user;
+            return query.ToList();
         }     
         
-        public IEnumerable<User> GetHiredUsers()
+        public IEnumerable<User> GetFiredUsers()
         {
-            var user = db.Users                
-                .Include(c => c.UserContact)
-                .Where(u => u.Hired)
-                .ToList();
+            var query = _db.Users.Include(c => c.UserContact)
+                .Where(u => u.Fired);
 
-            return user;
+            return query.ToList();
         }
 
-        public IEnumerable<User> GetIdledUsers()
+        public IEnumerable<User> GetHiredUsers()
         {
-            var user = db.Users
-                .Where(u => !u.Hired)
-                .ToList();
+            var query = _db.Users
+                .Where(u => !u.Fired);
 
-            return user;
+            return query.ToList();
         }
     }
 }

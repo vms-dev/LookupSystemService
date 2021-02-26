@@ -6,6 +6,24 @@ namespace LookupSystem.DataAccess.Data
 {
     public class DbInitializer
     {
+        public static void InitializeV2(LookupSystemDbContext context)
+        {
+            context.Database.EnsureCreated();
+            
+            // Look for any students.
+            if (context.Users.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            
+            var users = DataInit.GenerateUserData(10);
+            
+            context.Users.AddRange(users);
+            context.SaveChanges();
+            
+        }
+        
         public static void Initialize(LookupSystemDbContext context)
         {
             context.Database.EnsureCreated();
@@ -31,21 +49,21 @@ namespace LookupSystem.DataAccess.Data
                     Id=userId1,
                     CreatedDate=DateTime.Parse("2019-09-01"),
                     DeleteDate=null,
-                    Hired = true,
+                    Fired = true,
                     ManagerId = Guid.Parse("1bd725c8-4ea1-4462-9def-f32e027103f9"),
                 },
                 new User{
                     Id=userId2,
                     CreatedDate=DateTime.Parse("2017-10-12"),
                     DeleteDate=null,
-                    Hired = false,
+                    Fired = false,
                     ManagerId = null
                 },
                 new User{
                     Id=userId3,
                     CreatedDate=DateTime.Parse("2018-09-03"),
                     DeleteDate=null,
-                    Hired = true,
+                    Fired = true,
                     ManagerId = Guid.Parse("1bd725c8-4ea1-4462-9def-f32e027103f9"),
 
                 },
@@ -53,35 +71,35 @@ namespace LookupSystem.DataAccess.Data
                     Id=userId4,
                     CreatedDate=DateTime.Parse("2017-01-06"),
                     DeleteDate=DateTime.Parse("2018-01-06"),
-                    Hired = false,
+                    Fired = false,
                     ManagerId = null
                 },
                 new User{
                     Id=userId5,
                     CreatedDate=DateTime.Parse("2017-05-18"),
                     DeleteDate=DateTime.Parse("2020-03-10"),
-                    Hired = false,
+                    Fired = false,
                     ManagerId = null
                 },
                 new User{
                     Id=userId6,
                     CreatedDate=DateTime.Parse("2016-09-21"),
                     DeleteDate=null,
-                    Hired = true,
+                    Fired = true,
                     ManagerId = Guid.Parse("1bd725c8-4ea1-4462-9def-f32e027103f9"),
                 },
                 new User{
                     Id=userId7,
                     CreatedDate=DateTime.Parse("2018-02-23"),
                     DeleteDate=null,
-                    Hired = true,
+                    Fired = true,
                     ManagerId = Guid.Parse("e1967daf-cda9-4b86-ac17-e36888177d17"),
                 },
                 new User{
                     Id=userId8,
                     CreatedDate=DateTime.Parse("2019-08-29"),
                     DeleteDate=null,
-                    Hired = false,
+                    Fired = false,
                     ManagerId = Guid.Parse("e1967daf-cda9-4b86-ac17-e36888177d17"),
                 }
             };
