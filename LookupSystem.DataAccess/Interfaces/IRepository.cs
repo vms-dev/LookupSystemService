@@ -18,5 +18,7 @@ namespace LookupSystem.DataAccess.Interfaces
         IEnumerable<T> GetUserByPhone(string phone);
         IEnumerable<T> GetFiredUsers();
         IEnumerable<T> GetHiredUsers();
+
+
     }
 }
