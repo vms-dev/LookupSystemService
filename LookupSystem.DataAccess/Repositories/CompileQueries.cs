@@ -32,5 +32,14 @@ namespace LookupSystem.DataAccess.Repositories
             EF.CompileQuery(
                 (LookupSystemDbContext db) => db.Users.Where(u => !u.Fired)
             );
+
+        public static Func<LookupSystemDbContext, string, string, Guid?, IEnumerable<User>> GetUsersByName =
+            EF.CompileQuery(
+                (LookupSystemDbContext db, string firstName, string lastName, Guid? managerId) => db.Users
+                .Include(c => c.UserContact)
+                .Where(u => EF.Functions.Like(u.UserContact.FirstName, firstName) ||
+                            EF.Functions.Like(u.UserContact.LastName, lastName) ||
+                            (u.ManagerId.HasValue && managerId.HasValue && u.ManagerId.Value == managerId.Value))
+            );
     }
 }

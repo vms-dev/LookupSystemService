@@ -166,5 +166,47 @@ namespace LookupSystemService.Controllers
             }
         }
 
+
+        [HttpGet("GetUsersByName/{name}")]
+        [MapToApiVersion("1")]
+        public IEnumerable<UserFired> GetUsersByNameV1()
+        {
+            try
+            {
+                //var users = _mapper.Map<List<UserFired>>(_userRepo.GetHiredUsers());
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserFired>();
+            }
+        }
+
+
+        [HttpGet("GetUsersByName")]
+        [MapToApiVersion("2")]
+        public IEnumerable<UserFired> GetUsersByNameV2([FromQuery] RequestByNameModel model)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(model.FirstName))
+                {
+                    model.FirstName = $"{model.FirstName}%";
+                }
+                if (!string.IsNullOrWhiteSpace(model.LastName))
+                {
+                    model.LastName = $"{model.LastName}%";
+                }
+
+                var users = _mapper.Map<List<UserFired>>(CompileQueries.GetUsersByName(_context, model.FirstName, model.LastName, model.ManagerId).ToList());
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserFired>();
+            }
+        }
     }
 }
