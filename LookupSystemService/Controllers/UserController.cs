@@ -10,8 +10,10 @@ using LookupSystem.DataAccess.Data;
 
 namespace LookupSystemService.Controllers
 {
+    [ApiVersion("1")]
+    [ApiVersion("2")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UserController : ControllerBase
     {
 
@@ -75,7 +77,25 @@ namespace LookupSystemService.Controllers
 
 
         [HttpGet("GetHiredUsers")]
-        public IEnumerable<UserFired> GetHiredUsers()
+        [MapToApiVersion("1")]
+        public IEnumerable<UserFired> GetHiredUsersV1()
+        {
+            try
+            {
+                var users = _mapper.Map<List<UserFired>>(_userRepo.GetHiredUsers());
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserFired>();
+            }
+        }
+
+
+        [HttpGet("GetHiredUsers")]
+        [MapToApiVersion("2")]
+        public IEnumerable<UserFired> GetHiredUsersV2()
         {
             try
             {
