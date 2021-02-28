@@ -36,14 +36,14 @@ namespace LookupSystemService
             
             services.AddDbContext<LookupSystemDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LookupSystemDbContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddTransient<DbInitializer>();
             
             services.AddTransient<IRepository<User>>(provider => {
                 var context  = provider.GetService<LookupSystemDbContext>();
-                return new UserRepository(context);;
+                return new UserRepository(context);
             });
-            
-            //services.AddScoped<IUserService, UserService>();
-            //services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

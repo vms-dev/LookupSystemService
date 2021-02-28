@@ -13,7 +13,6 @@ namespace LookupSystem.DataAccess.Repositories
         private readonly LookupSystemDbContext _db;
         public UserRepository(LookupSystemDbContext context)
         {
-            //db = new UserContext();
             _db = context;
         }
         public IQueryable<User> GetAll()

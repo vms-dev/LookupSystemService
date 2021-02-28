@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using LookupSystem.DataAccess.Data;
 
 namespace LookupSystemService.Controllers
 {
@@ -18,11 +19,12 @@ namespace LookupSystemService.Controllers
         private readonly IRepository<User> _userRepo;
         private readonly IMapper _mapper;
 
-        public UserController(ILogger<UserController> logger, IMapper mapper, IRepository<User> userRepo)
+        public UserController(ILogger<UserController> logger, IMapper mapper, IRepository<User> userRepo, DbInitializer dbInitializer)
         {
             _logger = logger;
             _userRepo = userRepo;
             _mapper = mapper;
+            dbInitializer.InitializeFakeData();
         }
 
         [HttpGet("GetUserByEmail/{email}")]

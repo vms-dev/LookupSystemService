@@ -18,9 +18,7 @@ namespace LookupSystem.DataAccess.Data
                 .HasOne(u => u.UserContact)
                 .WithOne(uc => uc.User)
                 .HasForeignKey<UserContact>(fk => fk.UserId);
-
-            //modelBuilder.Entity<User>();
-            //modelBuilder.Entity<UserContact>();
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
