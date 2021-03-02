@@ -85,10 +85,11 @@ namespace LookupSystem.DataAccess.Repositories
         
         public IEnumerable<User> GetFiredUsers()
         {
-            var query = _db.Users.Include(c => c.UserContact)
+            var query = _db.Users.Include(c => c.UserContact).Include(t => t.Tags)
                 .Where(u => u.Fired);
 
-            return query.ToList();
+            var rerult = query.ToList();
+            return rerult;
         }
 
         public IEnumerable<User> GetHiredUsers()

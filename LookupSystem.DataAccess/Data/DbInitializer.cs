@@ -25,18 +25,54 @@ namespace LookupSystem.DataAccess.Data
         {
             if (bool.TryParse(_configuration["AddFakeDataToDatabase"], out var result) && result)
             {
+                Random randomizer = new Random();
+
+                var users = _dbContext.Users.ToList();
                 // Look for any User.
-                if (_dbContext.Users.Any())
+                if (!users.Any())
                 {
-                    return;  
+                    users = GenerateUserData(30);
+                    _dbContext.Users.AddRange(users);
                 }
-                
-                var users = GenerateUserData(30);
-                _dbContext.Users.AddRange(users);
+
+                var tags = _dbContext.Tags.ToList();
+                if (!tags.Any())
+                {
+                    // Learning • Leisure activities • Management • Massage • Medicine
+                    //
+                    var activities = new[] { "Management", "Learning", "Massage", "Medicine", "Publishing" , "Teaching" };
+                    foreach (var activity in activities)
+                    {
+                        tags.Add(FakeTagsData(activity).Generate());
+                    }
+
+                    _dbContext.Tags.AddRange(tags);                   
+                }
+
+                foreach (var user in users)
+                {
+                    var randomTags = tags.GetRandom<Tag>(randomizer.Next(1, tags.Count));
+                    foreach (var rt in randomTags)
+                    {
+                        user.Tags.Add(rt);
+                    }                   
+                }
+
                 _dbContext.SaveChanges();
             }
         }
 
+
+        private Faker<Tag> FakeTagsData(string activityName)
+        {
+
+
+            var tagContactFaker = new Faker<Tag>()
+                    .RuleFor(t => t.Id, f => f.Random.Guid())
+                    .RuleFor(t => t.Name, f => activityName);
+
+            return tagContactFaker;
+        }
 
         private List<User> GenerateUserData(int countItems)
         {

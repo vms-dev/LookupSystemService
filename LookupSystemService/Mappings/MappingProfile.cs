@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LookupSystem.DataAccess.Models;
 using LookupSystemService.Models;
+using System.Linq;
 
 namespace LookupSystemService.Mappings
 {
@@ -9,14 +10,16 @@ namespace LookupSystemService.Mappings
         public MappingProfile()
         {
             CreateMap<User, UserHired>();
-            
+
             CreateMap<User, UserFired>()
                 .ForMember("Name", opt => opt.MapFrom(m => $"{m.UserContact.FirstName} {m.UserContact.LastName}"))
                 .ForMember("CreatedDate", opt => opt.MapFrom(m => m.CreatedDate.ToShortDateString()))
                 .ForMember("DeleteDate", opt => opt.MapFrom(m => m.DeleteDate.HasValue ? m.DeleteDate.Value.ToShortDateString() : null))
                 .ForMember("Phone", opt => opt.MapFrom(m => m.UserContact.Phone))
                 .ForMember("MobilePhone", opt => opt.MapFrom(m => m.UserContact.MobilePhone))
-                .ForMember("Email", opt => opt.MapFrom(m => m.UserContact.Email));
+                .ForMember("Email", opt => opt.MapFrom(m => m.UserContact.Email))
+                .ForMember(d => d.Activities, opt => opt.MapFrom(m => m.Tags.Select(t => t.Name).ToArray()));
+;
 
             CreateMap<User, UserByPhone>()
                 .ForMember("Name", opt => opt.MapFrom(m => $"{m.UserContact.FirstName} {m.UserContact.LastName}"))

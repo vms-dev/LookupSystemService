@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LookupSystem.DataAccess.Models;
+using System;
+using System.Collections.Generic;
 
 namespace LookupSystemService.Models
 {
@@ -10,5 +12,7 @@ namespace LookupSystemService.Models
         public string Phone { get; set; }
         public string MobilePhone { get; set; }
         public string Email { get; set; }
+
+        public List<string> Activities { get; set; }
     }
 }
