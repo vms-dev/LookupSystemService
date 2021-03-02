@@ -31,7 +31,9 @@ namespace LookupSystemService.Controllers
             _userRepo = userRepo;
             _mapper = mapper;
             _context = context;
+#if DEBUG
             dbInitializer.InitializeFakeData();
+#endif
         }
 
         [HttpGet("GetUserByEmail/{email}")]
@@ -167,26 +169,9 @@ namespace LookupSystemService.Controllers
         }
 
 
-        [HttpGet("GetUsersByName/{name}")]
-        [MapToApiVersion("1")]
-        public IEnumerable<UserFired> GetUsersByNameV1()
-        {
-            try
-            {
-                //var users = _mapper.Map<List<UserFired>>(_userRepo.GetHiredUsers());
-                return null;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                return new List<UserFired>();
-            }
-        }
-
-
         [HttpGet("GetUsersByName")]
-        [MapToApiVersion("2")]
-        public IEnumerable<UserFired> GetUsersByNameV2([FromQuery] RequestByNameModel model)
+        [MapToApiVersion("1")]
+        public IEnumerable<UserByName> GetUsersByNameV1([FromQuery] RequestByNameModel model)
         {
             try
             {
@@ -199,13 +184,39 @@ namespace LookupSystemService.Controllers
                     model.LastName = $"{model.LastName}%";
                 }
 
-                var users = _mapper.Map<List<UserFired>>(CompileQueries.GetUsersByName(_context, model.FirstName, model.LastName, model.ManagerId).ToList());
+                var users = _mapper.Map<List<UserByName>>(_userRepo.GetUsersByName(model.FirstName, model.LastName));
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserFired>();
+                return new List<UserByName>();
+            }
+        }
+
+
+        [HttpGet("GetUsersByName")]
+        [MapToApiVersion("2")]
+        public IEnumerable<UserByName> GetUsersByNameV2([FromQuery] RequestByNameModel model)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(model.FirstName))
+                {
+                    model.FirstName = $"{model.FirstName}%";
+                }
+                if (!string.IsNullOrWhiteSpace(model.LastName))
+                {
+                    model.LastName = $"{model.LastName}%";
+                }
+
+                var users = _mapper.Map<List<UserByName>>(CompileQueries.GetUsersByName(_context, model.FirstName, model.LastName).ToList());
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserByName>();
             }
         }
     }

@@ -27,8 +27,12 @@ namespace LookupSystemService.Mappings
                 .ForMember("FirstName", opt => opt.MapFrom(m => m.UserContact.FirstName))
                 .ForMember("LastName", opt => opt.MapFrom(m => m.UserContact.LastName))
                 .ForMember("Email", opt => opt.MapFrom(m => m.UserContact.Email));
-            
-            
+
+            CreateMap<User, UserByName>()
+                .ForMember("Id", opt => opt.MapFrom(m => m.Id))
+                .ForMember("Name", opt => opt.MapFrom(m => $"{m.UserContact.FirstName} {m.UserContact.LastName}"))
+                .ForMember("ManagerId", opt => opt.MapFrom(m => m.ManagerId));
+
         }
     }
 }
