@@ -32,6 +32,8 @@ namespace LookupSystemService.Controllers
             _mapper = mapper;
             _context = context;
 #if DEBUG
+            //Место вызова не верное и будет перенесено. Изначально хотел вызвыть в клессе LookupSystemDbContext
+            //но я там не получал контекст. Разберусь с этим и переделаю.
             dbInitializer.InitializeFakeData();
 #endif
         }
@@ -52,6 +54,7 @@ namespace LookupSystemService.Controllers
             }
         }
 
+        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetUserByEmail/{email}")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetUserByEmailV2(string email)
@@ -85,6 +88,7 @@ namespace LookupSystemService.Controllers
             }
         }
 
+        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetUserByPhone/{phone}")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetUserByPhoneV2(string phone)
@@ -118,6 +122,7 @@ namespace LookupSystemService.Controllers
             }
         }
 
+        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetFiredUsers")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetFiredUsersV2()
@@ -151,7 +156,7 @@ namespace LookupSystemService.Controllers
             }
         }
 
-
+        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetHiredUsers")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetHiredUsersV2()
@@ -194,7 +199,7 @@ namespace LookupSystemService.Controllers
             }
         }
 
-
+        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         //[HttpGet("GetUsersByName")]
         //[MapToApiVersion("2")]
         //public IEnumerable<UserByName> GetUsersByNameV2([FromQuery] RequestByNameModel model)

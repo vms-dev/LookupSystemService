@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace LookupSystem.DataAccess.Interfaces
 {
+    //Будет удалено в понедельник.
     public interface IRepository<T> : IDisposable  where T : class
     {
         IQueryable<T> GetAll();

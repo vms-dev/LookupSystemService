@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace LookupSystem.DataAccess.Repositories
 {
+    //Будет удалено в понедельник.
     public class UserRepository : IRepository<User>
     {
         private readonly LookupSystemDbContext _db;
@@ -133,6 +134,9 @@ namespace LookupSystem.DataAccess.Repositories
         //}
 
 
+        //На данный момент не получилось вызвать рекурсивный вызов чтоб получить всех менеджеров вверх по графу 
+        //через Linq или иетоды расширения. Но мугу это сдлеть или запросом (выше), или методами (нижн).
+        //Нашол в одном посте на stackoverflow что EF не поддерживает CTE и тоже предлагали на делать через запрос...
         public IEnumerable<User> GetUsersByName(string firstName, string lastName)
         {
             var result = new List<User>();

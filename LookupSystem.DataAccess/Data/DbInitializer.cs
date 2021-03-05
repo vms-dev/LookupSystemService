@@ -21,6 +21,8 @@ namespace LookupSystem.DataAccess.Data
 
         }
 
+        //Место вызова не верное и будет перенесено. Изначально хотел вызвыть в клессе LookupSystemDbContext
+        //но я там не получал контекст. Разберусь с этим и переделаю.
         public void InitializeFakeData()
         {
             if (bool.TryParse(_configuration["AddFakeDataToDatabase"], out var result) && result)
