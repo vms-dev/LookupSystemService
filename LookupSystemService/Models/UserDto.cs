@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LookupSystemService.Models
 {
-    public class FullUserInfo
+    public class UserDto
     {
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -20,5 +20,6 @@ namespace LookupSystemService.Models
         public string SSN { get; set; }
         public string DriverLicense { get; set; }
         public string Email { get; set; }
+        public List<string> Activities { get; set; }
     }
 }

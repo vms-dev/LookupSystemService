@@ -46,7 +46,7 @@ namespace LookupSystemService
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>());
 
-            services.AddAutoMapper(typeof(MappingProfile)); 
+            services.AddAutoMapper(typeof(UserProfile)); 
             
             services.AddDbContext<LookupSystemDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LookupSystemDbContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();

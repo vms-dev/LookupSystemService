@@ -3,14 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LookupSystemService
 {
-	public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+    public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 	{
 		private readonly IApiVersionDescriptionProvider _provider;
 
@@ -18,8 +14,6 @@ namespace LookupSystemService
 
 		public void Configure(SwaggerGenOptions options)
 		{
-			// add a swagger document for each discovered API version
-			// note: you might choose to skip or document deprecated API versions differently
 			foreach (var description in _provider.ApiVersionDescriptions)
 			{
 				options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));

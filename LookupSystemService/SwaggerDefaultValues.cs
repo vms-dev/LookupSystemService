@@ -2,14 +2,11 @@
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace LookupSystemService
 {
-	public class SwaggerDefaultValues : IOperationFilter
+    public class SwaggerDefaultValues : IOperationFilter
 	{
 		public void Apply(OpenApiOperation operation, OperationFilterContext context)
 		{
@@ -19,8 +16,6 @@ namespace LookupSystemService
 			if (operation.Parameters == null)
 				return;
 
-			// REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/412
-			// REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/pull/413
 			foreach (var parameter in operation.Parameters)
 			{
 				var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);

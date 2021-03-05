@@ -2,7 +2,7 @@
 
 namespace LookupSystemService.Models
 {
-    public class RequestByNameModel
+    public class RequestUserByName
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
