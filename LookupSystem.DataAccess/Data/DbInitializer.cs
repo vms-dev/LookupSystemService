@@ -25,40 +25,41 @@ namespace LookupSystem.DataAccess.Data
         {
             if (bool.TryParse(_configuration["AddFakeDataToDatabase"], out var result) && result)
             {
-                Random randomizer = new Random();
-
-                var users = _dbContext.Users.ToList();
-                // Look for any User.
-                if (!users.Any())
-                {
-                    users = GenerateUserData(30);
-                    _dbContext.Users.AddRange(users);
-                }
 
                 var tags = _dbContext.Tags.ToList();
                 if (!tags.Any())
                 {
-                    // Learning • Leisure activities • Management • Massage • Medicine
-                    //
-                    var activities = new[] { "Management", "Learning", "Massage", "Medicine", "Publishing" , "Teaching" };
+                    var activities = new[] { "Management", "Learning", "Massage", "Medicine", "Publishing", "Teaching" };
                     foreach (var activity in activities)
                     {
                         tags.Add(FakeTagsData(activity).Generate());
                     }
 
-                    _dbContext.Tags.AddRange(tags);                   
+                    _dbContext.Tags.AddRange(tags);
+                    _dbContext.SaveChanges();
                 }
 
-                foreach (var user in users)
+
+                var users = _dbContext.Users.ToList();
+                if (!users.Any())
                 {
-                    var randomTags = tags.GetRandom<Tag>(randomizer.Next(1, tags.Count));
-                    foreach (var rt in randomTags)
-                    {
-                        user.Tags.Add(rt);
-                    }                   
-                }
+                    users = GenerateUserData(30);
+                    _dbContext.Users.AddRange(users);
+                    _dbContext.SaveChanges();
 
-                _dbContext.SaveChanges();
+                    Random randomizer = new Random();
+                    foreach (var user in users)
+                    {
+                        var randomTags = tags.GetRandom<Tag>(randomizer.Next(1, tags.Count));
+                        foreach (var rt in randomTags)
+                        {
+                            if (user.Tags == null)
+                                user.Tags = new List<Tag>();
+                            user.Tags.Add(rt);
+                        }
+                    }
+                    _dbContext.SaveChanges();
+                }
             }
         }
 
@@ -134,8 +135,6 @@ namespace LookupSystem.DataAccess.Data
                 .RuleFor(u => u.Id, f => userContact.UserId)
                 .RuleFor(u => u.CreatedDate, f => userContact.CreatedDate)
                 .RuleFor(u => u.DeleteDate, f => userContact.DeleteDate)
-                //.RuleFor(u => u.Fired, f => isFiredPosible ? f.Random.Bool(0.3F) : false)
-                //.RuleFor(u => u.ManagerId, (f, u) => u.Fired ? null : f.Random.Guid())
                 .RuleFor(u => u.Fired, f => userContact.DeleteDate != null)
                 .RuleFor(u => u.ManagerId, ManagerId)
                 .RuleFor(u => u.UserContact, f => userContact);
