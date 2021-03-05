@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LookupSystem.DataAccess.Models
 {
-    [Index(nameof(Phone))]
+    [Index(nameof(Phone), nameof(Email))]
     public class UserContact
     {
         public Guid Id { get; set; }
