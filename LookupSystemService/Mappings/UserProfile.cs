@@ -9,7 +9,7 @@ namespace LookupSystemService.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<User, FullUserInfo>()
+            CreateMap<User, UserDto>()
                 .ForMember(u => u.Id, opt => opt.MapFrom(m => m.Id))
                 .ForMember(u => u.CreatedDate, opt => opt.MapFrom(m => m.CreatedDate))
                 .ForMember(u => u.DeleteDate, opt => opt.MapFrom(m => m.DeleteDate))
