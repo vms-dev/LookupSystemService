@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LookupSystem.DataAccess
+namespace LookupSystem.DataAccess.Extensions
 {
     public static class EnumerableExtensions
     {
@@ -12,9 +9,8 @@ namespace LookupSystem.DataAccess
 
         public static IEnumerable<T> GetRandom<T>(this List<T> list, int numItems)
         {
-            var items = new HashSet<T>(); // don't want to add the same item twice; otherwise use a list
+            var items = new HashSet<T>();
             while (numItems > 0)
-                // if we successfully added it, move on
                 if (items.Add(list[randomizer.Next(list.Count)])) numItems--;
 
             return items;

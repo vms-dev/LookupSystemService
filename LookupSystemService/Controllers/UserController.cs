@@ -209,7 +209,6 @@ namespace LookupSystemService.Controllers
         //        {
         //            model.LastName = $"{model.LastName}%";
         //        }
-
         //        var users = _mapper.Map<List<UserByName>>(CompileQueries.GetUsersByName(_context, model.FirstName, model.LastName).ToList());
         //        return users;
         //    }

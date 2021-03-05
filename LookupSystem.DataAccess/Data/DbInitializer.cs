@@ -5,13 +5,13 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Bogus;
 using Bogus.Extensions;
+using LookupSystem.DataAccess.Extensions;
 
 namespace LookupSystem.DataAccess.Data
 {
     public class DbInitializer
     {
-        private readonly LookupSystemDbContext _dbContext;
-        
+        private readonly LookupSystemDbContext _dbContext;        
         private readonly IConfiguration _configuration;
         
         public DbInitializer(LookupSystemDbContext context, IConfiguration configuration)
@@ -66,8 +66,6 @@ namespace LookupSystem.DataAccess.Data
 
         private Faker<Tag> FakeTagsData(string activityName)
         {
-
-
             var tagContactFaker = new Faker<Tag>()
                     .RuleFor(t => t.Id, f => f.Random.Guid())
                     .RuleFor(t => t.Name, f => activityName);
@@ -113,22 +111,21 @@ namespace LookupSystem.DataAccess.Data
 
         private Faker<User> FakeUserData(Guid? ManagerId, bool isFiredPosible = false)
         {
-
             var userContactFaker = new Faker<UserContact>()
-                    .RuleFor(u => u.Id, f => f.Random.Guid())
-                    .RuleFor(u => u.CreatedDate, f => f.Date.Past(15, DateTime.Now.AddDays(-1)))
-                    .RuleFor(u => u.DeleteDate, f => isFiredPosible ? f.Date.Past(15, DateTime.Now.AddDays(-1)).OrNull(f, 0.75F) : null)
-                    .RuleFor(u => u.FirstName, f => f.Name.FirstName())
-                    .RuleFor(u => u.LastName, f => f.Name.LastName())
-                    .RuleFor(u => u.Phone, f => f.Person.Phone)
-                    .RuleFor(u => u.MobilePhone, f => f.Person.Phone)
-                    .RuleFor(u => u.Country, f => f.Address.Country())
-                    .RuleFor(u => u.City, f => f.Address.City())
-                    .RuleFor(u => u.Address, f => f.Address.FullAddress())
-                    .RuleFor(u => u.SSN, f => f.Random.Replace("###-##-####"))
-                    .RuleFor(u => u.DriverLicense, f => f.Random.Replace("#########"))
-                    .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
-                    .RuleFor(u => u.UserId, f => f.Random.Guid());
+                .RuleFor(u => u.Id, f => f.Random.Guid())
+                .RuleFor(u => u.CreatedDate, f => f.Date.Past(15, DateTime.Now.AddDays(-1)))
+                .RuleFor(u => u.DeleteDate, f => isFiredPosible ? f.Date.Past(15, DateTime.Now.AddDays(-1)).OrNull(f, 0.75F) : null)
+                .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+                .RuleFor(u => u.LastName, f => f.Name.LastName())
+                .RuleFor(u => u.Phone, f => f.Person.Phone)
+                .RuleFor(u => u.MobilePhone, f => f.Person.Phone)
+                .RuleFor(u => u.Country, f => f.Address.Country())
+                .RuleFor(u => u.City, f => f.Address.City())
+                .RuleFor(u => u.Address, f => f.Address.FullAddress())
+                .RuleFor(u => u.SSN, f => f.Random.Replace("###-##-####"))
+                .RuleFor(u => u.DriverLicense, f => f.Random.Replace("#########"))
+                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
+                .RuleFor(u => u.UserId, f => f.Random.Guid());
             var userContact = userContactFaker.Generate();
             
             var userFaker = new Faker<User>()

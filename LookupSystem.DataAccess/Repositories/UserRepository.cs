@@ -128,9 +128,7 @@ namespace LookupSystem.DataAccess.Repositories
         //                        "JOIN [dbo].[UserContacts] AS [u0] ON [u0].UserId = [u].Id\n" +
         //                   ")\n" +
         //                  "SELECT * FROM UserCTE\n";
-
         //    var users = _db.Users.FromSqlRaw(rawQuery);
-
         //    return users;
         //}
 
@@ -152,6 +150,7 @@ namespace LookupSystem.DataAccess.Repositories
             }
             return result;
         }
+
 
         private IEnumerable<User> GetManager(Guid managerId)
         {
