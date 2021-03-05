@@ -105,7 +105,6 @@ namespace LookupSystem.DataAccess.Repositories
         public IEnumerable<User> GetHiredUsers()
         {
             var query = _db.Users
-                .AsNoTracking()
                 .Where(u => !u.Fired);
 
             var rerult = query.ToList();
