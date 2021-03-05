@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LookupSystemService.Models
 {
-    public class UserHired
+    public class FullUserInfo
     {
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
