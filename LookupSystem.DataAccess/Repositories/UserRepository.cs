@@ -67,36 +67,50 @@ namespace LookupSystem.DataAccess.Repositories
             GC.SuppressFinalize(this);
         }
 
+        //Client evaluation. 
         public IEnumerable<User> GetUserByEmail(string email)
         {
-            var query = _db.Users.Include(c => c.UserContact)
+            var query = _db.Users
+                .AsNoTracking()
+                .Include(c => c.UserContact)
+                .AsEnumerable()
                 .Where(u => string.Compare(u.UserContact.Email, email, StringComparison.OrdinalIgnoreCase) == 0);
             
             return query.ToList();
-        } 
-        
+        }
+
+        //Client evaluation. 
         public IEnumerable<User> GetUserByPhone(string phone)
         {
-            var query = _db.Users.Include(c => c.UserContact)
+            var query = _db.Users
+                .AsNoTracking()
+                .Include(c => c.UserContact)
+                .AsEnumerable()
                 .Where(u => string.Compare(u.UserContact.Phone, phone, StringComparison.OrdinalIgnoreCase) == 0);
 
             return query.ToList();
         }     
-        
+
+
         public IEnumerable<User> GetFiredUsers()
         {
-            var query = _db.Users.Include(c => c.UserContact)
+            var query = _db.Users
+                .AsNoTracking()
+                .Include(c => c.UserContact)
                 .Where(u => u.Fired);
 
-            return query.ToList();
+            var rerult = query.ToList();
+            return rerult;
         }
 
         public IEnumerable<User> GetHiredUsers()
         {
             var query = _db.Users
+                .AsNoTracking()
                 .Where(u => !u.Fired);
 
-            return query.ToList();
+            var rerult = query.ToList();
+            return rerult;
         }
     }
 }

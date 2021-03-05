@@ -36,133 +36,133 @@ namespace LookupSystemService.Controllers
 
         [HttpGet("GetUserByEmail/{email}")]
         [MapToApiVersion("1")]
-        public IEnumerable<UserByEmail> GetUserByEmailV1(string email)
+        public IEnumerable<ShortUserInfo> GetUserByEmailV1(string email)
         {
             try
             {
-                var users = _mapper.Map<List<UserByEmail>>(_userRepo.GetUserByEmail(email));
+                var users = _mapper.Map<List<ShortUserInfo>>(_userRepo.GetUserByEmail(email));
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserByEmail>();
+                return new List<ShortUserInfo>();
             }
         }
 
         [HttpGet("GetUserByEmail/{email}")]
         [MapToApiVersion("2")]
-        public IEnumerable<UserByEmail> GetUserByEmailV2(string email)
+        public IEnumerable<ShortUserInfo> GetUserByEmailV2(string email)
         {
             try
             {
-                var users = _mapper.Map<List<UserByEmail>>(CompileQueries.GetUserByEmail(_context, email).ToList());
+                var users = _mapper.Map<List<ShortUserInfo>>(CompileQueries.GetUserByEmail(_context, email).ToList());
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserByEmail>();
+                return new List<ShortUserInfo>();
             }
         }
 
 
         [HttpGet("GetUserByPhone/{phone}")]
         [MapToApiVersion("1")]
-        public IEnumerable<UserByPhone> GetUserByPhonev1(string phone)
+        public IEnumerable<ShortUserInfo> GetUserByPhonev1(string phone)
         {
             try
             {
-                var users = _mapper.Map<List<UserByPhone>>(_userRepo.GetUserByPhone(phone));
+                var users = _mapper.Map<List<ShortUserInfo>>(_userRepo.GetUserByPhone(phone));
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserByPhone>();
+                return new List<ShortUserInfo>();
             }
         }
 
         [HttpGet("GetUserByPhone/{phone}")]
         [MapToApiVersion("2")]
-        public IEnumerable<UserByPhone> GetUserByPhoneV2(string phone)
+        public IEnumerable<ShortUserInfo> GetUserByPhoneV2(string phone)
         {
             try
             {
-                var users = _mapper.Map<List<UserByPhone>>(CompileQueries.GetUserByPhone(_context, phone).ToList());
+                var users = _mapper.Map<List<ShortUserInfo>>(CompileQueries.GetUserByPhone(_context, phone).ToList());
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserByPhone>();
+                return new List<ShortUserInfo>();
             }
         }
 
 
         [HttpGet("GetFiredUsers")]
         [MapToApiVersion("1")]
-        public IEnumerable<UserFired> GetFiredUsersV1()
+        public IEnumerable<FullUserInfo> GetFiredUsersV1()
         {
             try
             {
-                var users = _mapper.Map<List<UserFired>>(_userRepo.GetFiredUsers());
+                var users = _mapper.Map<List<FullUserInfo>>(_userRepo.GetFiredUsers());
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserFired>();
+                return new List<FullUserInfo>();
             }
         }
 
         [HttpGet("GetFiredUsers")]
         [MapToApiVersion("2")]
-        public IEnumerable<UserFired> GetFiredUsersV2()
+        public IEnumerable<FullUserInfo> GetFiredUsersV2()
         {
             try
             {
-                var users = _mapper.Map<List<UserFired>>(CompileQueries.GetFiredUsers(_context).ToList());
+                var users = _mapper.Map<List<FullUserInfo>>(CompileQueries.GetFiredUsers(_context).ToList());
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserFired>();
+                return new List<FullUserInfo>();
             }
         }
 
 
         [HttpGet("GetHiredUsers")]
         [MapToApiVersion("1")]
-        public IEnumerable<UserFired> GetHiredUsersV1()
+        public IEnumerable<FullUserInfo> GetHiredUsersV1()
         {
             try
             {
-                var users = _mapper.Map<List<UserFired>>(_userRepo.GetHiredUsers());
+                var users = _mapper.Map<List<FullUserInfo>>(_userRepo.GetHiredUsers());
                 return users;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserFired>();
+                return new List<FullUserInfo>();
             }
         }
 
 
         [HttpGet("GetHiredUsers")]
         [MapToApiVersion("2")]
-        public IEnumerable<UserFired> GetHiredUsersV2()
+        public IEnumerable<FullUserInfo> GetHiredUsersV2()
         {
             try
             {
-                var users = _mapper.Map<List<UserFired>>(CompileQueries.GetHiredUsers(_context).ToList());
+                var users = _mapper.Map<List<FullUserInfo>>(CompileQueries.GetHiredUsers(_context).ToList());
                 return users;                
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                return new List<UserFired>();
+                return new List<FullUserInfo>();
             }
         }
 
