@@ -36,7 +36,6 @@ namespace LookupSystem.DataAccess.Repositories
         public static Func<LookupSystemDbContext, IEnumerable<User>> GetHiredUsers =
             EF.CompileQuery(
                 (LookupSystemDbContext db) => db.Users
-                .AsNoTracking()
                 .Where(u => !u.Fired)
             );
     }
