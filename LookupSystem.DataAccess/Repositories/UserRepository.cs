@@ -67,25 +67,36 @@ namespace LookupSystem.DataAccess.Repositories
             GC.SuppressFinalize(this);
         }
 
+        //Client evaluation. 
         public IEnumerable<User> GetUserByEmail(string email)
         {
-            var query = _db.Users.Include(c => c.UserContact)
+            var query = _db.Users
+                .AsNoTracking()
+                .Include(c => c.UserContact)
+                .AsEnumerable()
                 .Where(u => string.Compare(u.UserContact.Email, email, StringComparison.OrdinalIgnoreCase) == 0);
             
             return query.ToList();
-        } 
-        
+        }
+
+        //Client evaluation. 
         public IEnumerable<User> GetUserByPhone(string phone)
         {
-            var query = _db.Users.Include(c => c.UserContact)
+            var query = _db.Users
+                .AsNoTracking()
+                .Include(c => c.UserContact)
+                .AsEnumerable()
                 .Where(u => string.Compare(u.UserContact.Phone, phone, StringComparison.OrdinalIgnoreCase) == 0);
 
             return query.ToList();
         }     
-        
+
+
         public IEnumerable<User> GetFiredUsers()
         {
-            var query = _db.Users.Include(c => c.UserContact).Include(t => t.Tags)
+            var query = _db.Users
+                .AsNoTracking()
+                .Include(c => c.UserContact)
                 .Where(u => u.Fired);
 
             var rerult = query.ToList();
@@ -97,8 +108,32 @@ namespace LookupSystem.DataAccess.Repositories
             var query = _db.Users
                 .Where(u => !u.Fired);
 
-            return query.ToList();
+            var rerult = query.ToList();
+            return rerult;
         }
+
+
+        //public IEnumerable<User> GetUsersByName(string firstName, string lastName)
+        //{
+        //    var rawQuery = $"WITH UserCTE\n" +
+        //                  "AS\n" +
+        //                  "( \n" +
+        //                    "SELECT [u].[Id], [u].[CreatedDate], [u].[DeleteDate], [u].[Fired], [u].[ManagerId],  [u0].[Address], [u0].[City], [u0].[Country], [u0].[DriverLicense], [u0].[Email], [u0].[FirstName], [u0].[LastName], [u0].[MobilePhone], [u0].[Phone], [u0].[SSN], [u0].[UserId]\n" +
+        //                    "FROM [dbo].[Users] AS [u] LEFT JOIN [dbo].[UserContacts] AS [u0] ON [u0].UserId = [u].Id\n" +
+        //                    $"WHERE [u0].FirstName LIKE N'{firstName}' OR [u0].LastName LIKE N'{lastName}'\n" +
+        //                    "UNION ALL\n" +
+        //                    "SELECT [u].[Id], [u].[CreatedDate], [u].[DeleteDate], [u].[Fired], [u].[ManagerId], [u0].[Address], [u0].[City], [u0].[Country], [u0].[DriverLicense], [u0].[Email], [u0].[FirstName], [u0].[LastName], [u0].[MobilePhone], [u0].[Phone], [u0].[SSN], [u0].[UserId]\n" +
+        //                    "FROM UserCTE AS M\n" +
+        //                      "JOIN [dbo].[Users] AS [u] ON [u].Id = M.ManagerId\n" +
+        //                        "JOIN [dbo].[UserContacts] AS [u0] ON [u0].UserId = [u].Id\n" +
+        //                   ")\n" +
+        //                  "SELECT * FROM UserCTE\n";
+
+        //    var users = _db.Users.FromSqlRaw(rawQuery);
+
+        //    return users;
+        //}
+
 
         public IEnumerable<User> GetUsersByName(string firstName, string lastName)
         {
@@ -106,7 +141,6 @@ namespace LookupSystem.DataAccess.Repositories
             var query = _db.Users.Include(c => c.UserContact)
                 .Where(u => EF.Functions.Like(u.UserContact.FirstName, firstName) ||
                             EF.Functions.Like(u.UserContact.LastName, lastName));
-
             var users = query.ToList();
             foreach (var user in users)
             {
@@ -119,19 +153,17 @@ namespace LookupSystem.DataAccess.Repositories
             return result;
         }
 
-        private IEnumerable<User> GetManager(Guid managerId) 
+        private IEnumerable<User> GetManager(Guid managerId)
         {
             var users = _db.Users.Where(u => u.Id == managerId).ToList();
             var result = new List<User>();
             result.AddRange(users);
-
             foreach (var user in users)
             {
                 if (user.ManagerId != null)
                 {
                     result.AddRange(GetManager(user.ManagerId.Value));
                 }
-
             }
             return result;
         }
