@@ -1,16 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace LookupSystemService.Models
+namespace LookupSystem.DataAccess.Models
 {
+    [Index(nameof(Phone))]
     public class UserContact
     {
         public Guid Id { get; set; }
-
-        [Column(TypeName = "datetime2")]
+        
         public DateTime CreatedDate { get; set; }
-
-        [Column(TypeName = "datetime2")]
+        
         public DateTime? DeleteDate { get; set; }
 
         [Column(TypeName = "varchar(200)")]
@@ -19,10 +19,10 @@ namespace LookupSystemService.Models
         [Column(TypeName = "varchar(200)")]
         public string LastName { get; set; }
 
-        [Column(TypeName = "varchar(10)")]
+        [Column(TypeName = "varchar(30)")]
         public string Phone { get; set; }
 
-        [Column(TypeName = "varchar(10)")]
+        [Column(TypeName = "varchar(30)")]
         public string MobilePhone { get; set; }
 
         [Column(TypeName = "varchar(50)")]
@@ -39,12 +39,12 @@ namespace LookupSystemService.Models
 
         [Column(TypeName = "varchar(20)")]
         public string DriverLicense { get; set; }
-
-        [Column(TypeName = "varchar(100)")]
+        
+        [Column(TypeName = "nvarchar(100)")]
         public string Email { get; set; }
 
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

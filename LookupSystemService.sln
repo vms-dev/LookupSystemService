@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LookupSystem.DataAccess", "LookupSystem.DataAccess\LookupSystem.DataAccess.csproj", "{14F1F421-71D3-4863-8025-1140DBA42D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LookupSystemService", "LookupSystemService\LookupSystemService.csproj", "{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LookupSystemService", "LookupSystemService\LookupSystemService.csproj", "{27D2C36A-CFE5-4CFE-B004-1CFC400E7192}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

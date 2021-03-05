@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using LookupSystemService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using LookupSystem.DataAccess.Models;
 
 namespace LookupSystem.DataAccess.Data
 {
@@ -22,9 +18,12 @@ namespace LookupSystem.DataAccess.Data
                 .HasOne(u => u.UserContact)
                 .WithOne(uc => uc.User)
                 .HasForeignKey<UserContact>(fk => fk.UserId);
+            
+        }
 
-            //modelBuilder.Entity<User>();
-            //modelBuilder.Entity<UserContact>();
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
         }
     }
 }
