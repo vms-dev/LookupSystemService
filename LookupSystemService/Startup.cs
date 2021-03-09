@@ -5,13 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using LookupSystem.DataAccess.Data;
-using LookupSystem.DataAccess.Interfaces;
-using LookupSystem.DataAccess.Models;
-using LookupSystem.DataAccess.Repositories;
 using LookupSystemService.Mappings;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System;
+using AutoMapper.Extensions.ExpressionMapping;
 
 namespace LookupSystemService
 {
@@ -47,16 +46,15 @@ namespace LookupSystemService
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>());
 
-            services.AddAutoMapper(typeof(UserProfile)); 
-            
+            //services.AddAutoMapper(typeof(UserProfile)); 
+            // return services.AddAutoMapper(null, AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(cfg => {
+                cfg.AddExpressionMapping();
+            }, typeof(UserProfile));
+
             services.AddDbContext<LookupSystemDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LookupSystemDbContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<DbInitializer>();
-            
-            services.AddTransient<IRepository<User>>(provider => {
-                var context  = provider.GetService<LookupSystemDbContext>();
-                return new UserRepository(context);
-            });
 
         }
 

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LookupSystem.DataAccess.Repositories
 {
-    public class CompileQueries
+    public class UserQueries
     {
         public static Func<LookupSystemDbContext, string, IEnumerable<User>> GetUserByEmail =
             EF.CompileQuery(
