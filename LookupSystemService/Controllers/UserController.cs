@@ -6,11 +6,9 @@ using System;
 using System.Collections.Generic;
 using LookupSystem.DataAccess.Data;
 using System.Linq;
-using LookupSystem.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using LookupSystem.DataAccess.Models;
 
 namespace LookupSystemService.Controllers
 {
@@ -26,16 +24,11 @@ namespace LookupSystemService.Controllers
         private readonly LookupSystemDbContext _context;
 
 
-        public UserController(ILogger<UserController> logger, IMapper mapper, DbInitializer dbInitializer, LookupSystemDbContext context)
+        public UserController(ILogger<UserController> logger, IMapper mapper, LookupSystemDbContext context)
         {
             _logger = logger;
             _mapper = mapper;
             _context = context;
-#if DEBUG
-            //Место вызова не верное и будет перенесено. Изначально хотел вызвыть в клессе LookupSystemDbContext
-            //но я там не получал контекст. Разберусь с этим и переделаю.
-            dbInitializer.InitializeFakeData();
-#endif
         }
 
         [HttpGet("GetUserByEmail/{email}")]
