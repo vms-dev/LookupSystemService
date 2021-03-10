@@ -227,8 +227,8 @@ namespace LookupSystemService.Controllers
                                ")\n" +
                               "SELECT * FROM UserCTE\n";
 
-                var query = _context.Users.FromSqlRaw(rawQuery);
-                var users = _mapper.ProjectTo<UserDto>(query).ToList();
+                var query = _context.Users.FromSqlRaw(rawQuery).ToList();
+                var users = _mapper.ProjectTo<UserDto>(query.AsQueryable());
                 return users;
             }
             catch (Exception e)
@@ -264,3 +264,40 @@ namespace LookupSystemService.Controllers
         //}
     }
 }
+
+
+/*
+         public IEnumerable<User> GetUsersByName(string firstName, string lastName)
+        {
+            var result = new List<User>();
+            var query = _db.Users.Include(c => c.UserContact)
+                .Where(u => EF.Functions.Like(u.UserContact.FirstName, firstName) ||
+                            EF.Functions.Like(u.UserContact.LastName, lastName));
+            var users = query.ToList();
+            foreach (var user in users)
+            {
+                result.Add(user);
+                if (user.ManagerId != null)
+                {
+                    result.AddRange(GetManager(user.ManagerId.Value));
+                }
+            }
+            return result;
+        }
+
+
+        private IEnumerable<User> GetManager(Guid managerId)
+        {
+            var users = _db.Users.Where(u => u.Id == managerId).ToList();
+            var result = new List<User>();
+            result.AddRange(users);
+            foreach (var user in users)
+            {
+                if (user.ManagerId != null)
+                {
+                    result.AddRange(GetManager(user.ManagerId.Value));
+                }
+            }
+            return result;
+        }
+ */
