@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using LookupSystem.DataAccess.Models;
 
 namespace LookupSystemService.Controllers
 {
@@ -33,7 +34,7 @@ namespace LookupSystemService.Controllers
 
         [HttpGet("GetUserByEmail/{email}")]
         [MapToApiVersion("1")]
-        public async Task<IEnumerable<UserDto>> GetUserByEmailV1(string email)
+        public IEnumerable<UserDto> GetUserByEmailV1(string email)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace LookupSystemService.Controllers
                     .Include(c => c.UserContact)
                     .Where(u => u.UserContact.Email.ToUpper() == email.ToUpper());
 
-                var users = await _mapper.ProjectTo<UserDto>(query).ToListAsync();
+                var users = _mapper.ProjectTo<UserDto>(query).ToList();
                 return users;
             }
             catch (Exception e)
@@ -52,7 +53,6 @@ namespace LookupSystemService.Controllers
             }
         }
 
-        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetUserByEmail/{email}")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetUserByEmailV2(string email)
@@ -76,10 +76,9 @@ namespace LookupSystemService.Controllers
             }
         }
 
-
         [HttpGet("GetUserByPhone/{phone}")]
         [MapToApiVersion("1")]
-        public async Task<IEnumerable<UserDto>> GetUserByPhonev1(string phone)
+        public IEnumerable<UserDto> GetUserByPhonev1(string phone)
         {
             try
             {
@@ -87,7 +86,7 @@ namespace LookupSystemService.Controllers
                   .AsNoTracking()
                   .Include(c => c.UserContact)
                   .Where(u => u.UserContact.Phone.ToUpper() == phone.ToUpper());
-                var users = await _mapper.ProjectTo<UserDto>(query).ToListAsync();
+                var users = _mapper.ProjectTo<UserDto>(query).ToList();
                 return users;
             }
             catch (Exception e)
@@ -97,7 +96,6 @@ namespace LookupSystemService.Controllers
             }
         }
 
-        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetUserByPhone/{phone}")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetUserByPhoneV2(string phone)
@@ -105,7 +103,7 @@ namespace LookupSystemService.Controllers
             try
             {
                 Expression<Func<UserDto, bool>> predicate = u => u.Phone.ToUpper() == phone.ToUpper();
-                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate);
+                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate).ToList();
                 return users;
             }
             catch (Exception e)
@@ -115,10 +113,9 @@ namespace LookupSystemService.Controllers
             }
         }
 
-
         [HttpGet("GetFiredUsers")]
         [MapToApiVersion("1")]
-        public async Task<IEnumerable<UserDto>> GetFiredUsersV1()
+        public IEnumerable<UserDto> GetFiredUsersV1()
         {
             try
             {
@@ -126,7 +123,7 @@ namespace LookupSystemService.Controllers
                     .AsNoTracking()
                     .Include(c => c.UserContact)
                     .Where(u => u.Fired);
-                var users = await _mapper.ProjectTo<UserDto>(query).ToListAsync();
+                var users = _mapper.ProjectTo<UserDto>(query).ToList();
                 return users;
             }
             catch (Exception e)
@@ -136,7 +133,6 @@ namespace LookupSystemService.Controllers
             }
         }
 
-        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetFiredUsers")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetFiredUsersV2()
@@ -144,7 +140,7 @@ namespace LookupSystemService.Controllers
             try
             {
                 Expression<Func<UserDto, bool>> predicate = u => u.Fired;
-                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate);
+                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate).ToList();
                 return users;
             }
             catch (Exception e)
@@ -154,15 +150,14 @@ namespace LookupSystemService.Controllers
             }
         }
 
-
         [HttpGet("GetHiredUsers")]
         [MapToApiVersion("1")]
-        public async Task<IEnumerable<UserDto>> GetHiredUsersV1()
+        public IEnumerable<UserDto> GetHiredUsersV1()
         {
             try
             {
                 var query = _context.Users.Where(u => !u.Fired);
-                var users = await _mapper.ProjectTo<UserDto>(query).ToListAsync();
+                var users = _mapper.ProjectTo<UserDto>(query).ToList();
                 return users;
             }
             catch (Exception e)
@@ -172,7 +167,6 @@ namespace LookupSystemService.Controllers
             }
         }
 
-        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
         [HttpGet("GetHiredUsers")]
         [MapToApiVersion("2")]
         public IEnumerable<UserDto> GetHiredUsersV2()
@@ -180,7 +174,7 @@ namespace LookupSystemService.Controllers
             try
             {
                 Expression<Func<UserDto, bool>> predicate = u => !u.Fired;
-                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate);
+                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate).ToList();
                 return users;
             }
             catch (Exception e)
@@ -190,10 +184,9 @@ namespace LookupSystemService.Controllers
             }
         }
 
-
-        [HttpGet("GetUsersByName")]
+        [HttpGet("GetUsersByNameBySqlRaw")]
         [MapToApiVersion("1")]
-        public IEnumerable<UserDto> GetUsersByNameV1([FromQuery] RequestUserByName model)
+        public IEnumerable<UserDto> GetUsersByNameBySqlRaw([FromQuery] RequestUserByName model)
         {
             try
             {
@@ -221,7 +214,7 @@ namespace LookupSystemService.Controllers
                               "SELECT * FROM UserCTE\n";
 
                 var query = _context.Users.FromSqlRaw(rawQuery).ToList();
-                var users = _mapper.ProjectTo<UserDto>(query.AsQueryable());
+                var users = _mapper.Map<List<UserDto>>(query);
                 return users;
             }
             catch (Exception e)
@@ -231,57 +224,85 @@ namespace LookupSystemService.Controllers
             }
         }
 
-        //Задача с втрой версией не сделана, я делал  CompileQuery а не Expression
-        //[HttpGet("GetUsersByName")]
-        //[MapToApiVersion("2")]
-        //public IEnumerable<UserByName> GetUsersByNameV2([FromQuery] RequestByNameModel model)
-        //{
-        //    try
-        //    {
-        //        if (!string.IsNullOrWhiteSpace(model.FirstName))
-        //        {
-        //            model.FirstName = $"{model.FirstName}%";
-        //        }
-        //        if (!string.IsNullOrWhiteSpace(model.LastName))
-        //        {
-        //            model.LastName = $"{model.LastName}%";
-        //        }
-        //        var users = _mapper.Map<List<UserByName>>(CompileQueries.GetUsersByName(_context, model.FirstName, model.LastName).ToList());
-        //        return users;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _logger.LogError(e.Message);
-        //        return new List<UserByName>();
-        //    }
-        //}
-    }
-}
 
-
-/*
-         public IEnumerable<User> GetUsersByName(string firstName, string lastName)
+       [HttpGet("GetUsersByNameByTree")]
+       [MapToApiVersion("1")]
+        public IEnumerable<UserDto> GetUsersByNameByTree([FromQuery] RequestUserByName model)
         {
-            var result = new List<User>();
-            var query = _db.Users.Include(c => c.UserContact)
-                .Where(u => EF.Functions.Like(u.UserContact.FirstName, firstName) ||
-                            EF.Functions.Like(u.UserContact.LastName, lastName));
-            var users = query.ToList();
-            foreach (var user in users)
+            try
             {
-                result.Add(user);
-                if (user.ManagerId != null)
-                {
-                    result.AddRange(GetManager(user.ManagerId.Value));
-                }
+                var all = _context.Users.AsNoTracking().Include(c => c.UserContact).Include(t => t.Tags).ToList();
+                TreeExtensions.ITree<User> virtualRootNode = all.ToTree((parent, child) => child.ManagerId == parent.Id);
+                List<TreeExtensions.ITree<User>> rootLevelFoldersWithSubTree = virtualRootNode.Children.ToList();
+                List<TreeExtensions.ITree<User>> flattenedListOfFolderNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
+                TreeExtensions.ITree<User> userNode = flattenedListOfFolderNodes.First(node => node.Data.UserContact.FirstName == model.FirstName || node.Data.UserContact.LastName == model.LastName);
+                List<User> usr = new List<User>();
+                usr.Add(userNode.Data);
+                usr.AddRange(GetParents(userNode));
+                //var users = _mapper.ProjectTo<UserDto>(usr.AsQueryable());
+                var users = _mapper.Map<List<UserDto>>(usr);
+                return users;
             }
-            return result;
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserDto>();
+            }
         }
 
 
+
+        [HttpGet("GetUsersByNameByRecursion")]
+        [MapToApiVersion("1")]
+        public IEnumerable<UserDto> GetUsersByNameByRecursion([FromQuery] RequestUserByName model)
+        {
+            try
+            {
+                var foundUsers = _context.Users
+                    .AsNoTracking()
+                    .Include(c => c.UserContact)
+                    .Include(t => t.Tags)
+                    .Where(u => EF.Functions.Like(u.UserContact.FirstName, model.FirstName) ||
+                                EF.Functions.Like(u.UserContact.LastName, model.LastName))
+                    .ToList();
+                
+                var result = new List<User>();
+                foreach (var user in foundUsers)
+                {
+                    result.Add(user);
+                    if (user.ManagerId != null)
+                    {
+                        result.AddRange(GetManager(user.ManagerId.Value));
+                    }
+                }
+                var users = _mapper.Map<List<UserDto>>(result);
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserDto>();
+            }
+        }
+
+
+        private static List<T> GetParents<T>(TreeExtensions.ITree<T> node, List<T> parentNodes = null) where T : class
+        {
+            while (true)
+            {
+                parentNodes ??= new List<T>();
+                if (node?.Parent?.Data == null) return parentNodes;
+                parentNodes.Add(node.Parent.Data);
+                node = node.Parent;
+            }
+        }
+
         private IEnumerable<User> GetManager(Guid managerId)
         {
-            var users = _db.Users.Where(u => u.Id == managerId).ToList();
+            var users = _context.Users
+                    .AsNoTracking()
+                    .Include(c => c.UserContact)
+                    .Include(t => t.Tags).Where(u => u.Id == managerId).ToList();
             var result = new List<User>();
             result.AddRange(users);
             foreach (var user in users)
@@ -293,4 +314,7 @@ namespace LookupSystemService.Controllers
             }
             return result;
         }
- */
+
+    }
+}
+
