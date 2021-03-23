@@ -4,14 +4,16 @@ using LookupSystem.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LookupSystem.DataAccess.Migrations
 {
     [DbContext(typeof(LookupSystemDbContext))]
-    partial class LookupSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210314210120_AddUserContactsNewIndex")]
+    partial class AddUserContactsNewIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,7 +83,7 @@ namespace LookupSystem.DataAccess.Migrations
                         .HasColumnType("varchar(20)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("varchar(200)");

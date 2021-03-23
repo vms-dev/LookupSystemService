@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LookupSystem.DataAccess.Models
 {
@@ -14,7 +15,9 @@ namespace LookupSystem.DataAccess.Models
 
         public Guid? ManagerId { get; set; }
 
+        public virtual ICollection<Tag> Tags { get; set; }
 
         public virtual UserContact UserContact { get; set; }
+
     }
 }

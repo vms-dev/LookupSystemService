@@ -11,6 +11,8 @@ namespace LookupSystem.DataAccess.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserContact> UserContacts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,7 +20,12 @@ namespace LookupSystem.DataAccess.Data
                 .HasOne(u => u.UserContact)
                 .WithOne(uc => uc.User)
                 .HasForeignKey<UserContact>(fk => fk.UserId);
-            
+
+            modelBuilder.Entity<User>()
+                .HasMany(a => a.Tags)
+                .WithMany(u => u.Users)
+                .UsingEntity(j => j.ToTable("UsersTags"));
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
