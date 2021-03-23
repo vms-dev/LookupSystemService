@@ -41,7 +41,9 @@ namespace LookupSystemService.Controllers
                 var query = _context.Users
                     .AsNoTracking()
                     .Include(c => c.UserContact)
-                    .Where(u => u.UserContact.Email.ToUpper() == email.ToUpper());
+                    .Where(u => u.UserContact.Email == email);
+
+                var queryStr = query.ToQueryString();
 
                 var users = _mapper.ProjectTo<UserDto>(query).ToList();
                 return users;
@@ -65,7 +67,11 @@ namespace LookupSystemService.Controllers
                 //return users;
 
                 Expression<Func<UserDto, bool>> predicate = u => u.Email.ToUpper() == email.ToUpper();
-                var users = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate).ToList();
+                var query = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate);
+
+                var queryStr = query.ToQueryString();
+
+                var users =  query.ToList();
                 return users;
 
             }

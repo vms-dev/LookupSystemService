@@ -1,4 +1,4 @@
-using LookupSystem.DataAccess.Data;
+п»їusing LookupSystem.DataAccess.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,8 +30,8 @@ namespace LookupSystemService
                 var services = scope.ServiceProvider;
                 try
                 {
-                    // Место вызова возможно не верное. Но согласно примерам вызов в методе OnModelCreating класса LookupSystemDbContext
-                    // приводил к ошибке записи данных в базу а также при миграции.                    
+                    // РњРµСЃС‚Рѕ РІС‹Р·РѕРІР° РІРѕР·РјРѕР¶РЅРѕ РЅРµ РІРµСЂРЅРѕРµ. РќРѕ СЃРѕРіР»Р°СЃРЅРѕ РїСЂРёРјРµСЂР°Рј РІС‹Р·РѕРІ РІ РјРµС‚РѕРґРµ OnModelCreating РєР»Р°СЃСЃР° LookupSystemDbContext
+                    // РїСЂРёРІРѕРґРёР» Рє РѕС€РёР±РєРµ Р·Р°РїРёСЃРё РґР°РЅРЅС‹С… РІ Р±Р°Р·Сѓ Р° С‚Р°РєР¶Рµ РїСЂРё РјРёРіСЂР°С†РёРё.                  
                     var dbInitializer = services.GetRequiredService<DbInitializer>();
                     dbInitializer.InitializeFakeData();
                 }

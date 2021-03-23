@@ -40,7 +40,7 @@ namespace LookupSystem.DataAccess.Models
         [Column(TypeName = "varchar(20)")]
         public string DriverLicense { get; set; }
         
-        [Column(TypeName = "nvarchar(100)")]
+        [Column(TypeName = "varchar(100)")]
         public string Email { get; set; }
 
 
