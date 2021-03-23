@@ -9,12 +9,15 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using AutoMapper.QueryableExtensions;
 using LookupSystem.DataAccess.Models;
+using LookupSystem.DataAccess.CompileQueries;
 
 namespace LookupSystemService.Controllers
 {
     [ApiVersion("1")]
     [ApiVersion("2")]
+    [ApiVersion("3")]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class UserController : ControllerBase
@@ -45,7 +48,8 @@ namespace LookupSystemService.Controllers
 
                 var queryStr = query.ToQueryString();
 
-                var users = _mapper.ProjectTo<UserDto>(query).ToList();
+                //var users = _mapper.ProjectTo<UserDto>(query).ToList();
+                var users = query.ProjectTo<UserDto>(_mapper.ConfigurationProvider).ToList();
                 return users;
             }
             catch (Exception e)
@@ -66,14 +70,25 @@ namespace LookupSystemService.Controllers
                 //var users = _mapper.ProjectTo<UserDto>(query).ToList();
                 //return users;
 
+                ////Server evaluation
+                //Expression<Func<UserDto, bool>> predicate = u => u.Email.ToUpper() == email.ToUpper();
+                //var query = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate);
+                //var queryStr = query.ToQueryString();
+                //var users = query.ToList();
+
+                //Server evaluation
                 Expression<Func<UserDto, bool>> predicate = u => u.Email.ToUpper() == email.ToUpper();
-                var query = _mapper.ProjectTo<UserDto>(_context.Users).Where(predicate);
-
+                var query = _context.Users.ProjectTo<UserDto>(_mapper.ConfigurationProvider).Where(predicate);
                 var queryStr = query.ToQueryString();
+                var users = query.ToList();
 
-                var users =  query.ToList();
+                //Client evaluation
+                //Expression<Func<UserDto, bool>> predicate = u => u.Email.ToUpper() == email.ToUpper();
+                //var query = _context.Users.ProjectTo<UserDto>(_mapper.ConfigurationProvider, predicate);
+                //var userStr = query.ToQueryString();
+                //var users = query.ToList();
+
                 return users;
-
             }
             catch (Exception e)
             {
@@ -81,6 +96,33 @@ namespace LookupSystemService.Controllers
                 return new List<UserDto>();
             }
         }
+
+        [HttpGet("GetUserByEmail/{email}")]
+        [MapToApiVersion("3")]
+        public IEnumerable<UserDto> GetUserByEmailV3(string email)
+        {
+            try
+            {
+                //Sonya21@yahoo.com
+                //Dovie4@hotmail.com
+
+                var query = UserQueries.GetUserByEmail(_context, email);
+                var query2 = query.AsQueryable().ProjectTo<UserDto>(_mapper.ConfigurationProvider);
+                var users = query2.ToList();
+
+                //var query = UserQueries.GetUserByEmail(_context, email);
+                //var users = _mapper.Map<List<UserDto>>(query);
+
+                return users;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new List<UserDto>();
+            }
+        }
+
+
 
         [HttpGet("GetUserByPhone/{phone}")]
         [MapToApiVersion("1")]

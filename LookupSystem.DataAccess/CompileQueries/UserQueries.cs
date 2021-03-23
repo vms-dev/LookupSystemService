@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LookupSystem.DataAccess.Repositories
+namespace LookupSystem.DataAccess.CompileQueries
 {
     public class UserQueries
     {
@@ -14,7 +14,8 @@ namespace LookupSystem.DataAccess.Repositories
                 (LookupSystemDbContext db, string email) => db.Users
                 .AsNoTracking()
                 .Include(c => c.UserContact)
-                .Where(u => u.UserContact.Email.ToUpper() == email.ToUpper()) // Сравнение строк с преобразованием в ToUpper() сделано в целях теста
+                .Include(t => t.Tags)
+                .Where(u => u.UserContact.Email == email)
             );
 
         public static Func<LookupSystemDbContext, string, IEnumerable<User>> GetUserByPhone =
@@ -22,7 +23,8 @@ namespace LookupSystem.DataAccess.Repositories
                 (LookupSystemDbContext db, string phone) => db.Users
                 .AsNoTracking()
                 .Include(c => c.UserContact)
-                .Where(u => string.Compare(u.UserContact.Phone, phone, StringComparison.OrdinalIgnoreCase) == 0)
+                .Include(t => t.Tags)
+                .Where(u => u.UserContact.Phone == phone)
             );
 
         public static Func<LookupSystemDbContext, IEnumerable<User>> GetFiredUsers =
@@ -30,6 +32,7 @@ namespace LookupSystem.DataAccess.Repositories
                 (LookupSystemDbContext db) => db.Users
                 .AsNoTracking()
                 .Include(c => c.UserContact)
+                .Include(t => t.Tags)
                 .Where(u => u.Fired)
             );
 
@@ -43,6 +46,7 @@ namespace LookupSystem.DataAccess.Repositories
             EF.CompileQuery(
                 (LookupSystemDbContext db, string firstName, string lastName) => db.Users
                 .Include(c => c.UserContact)
+                .Include(t => t.Tags)
                 .Where(u => EF.Functions.Like(u.UserContact.FirstName, firstName) ||
                             EF.Functions.Like(u.UserContact.LastName, lastName))
             );
