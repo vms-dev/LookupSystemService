@@ -105,6 +105,8 @@ namespace LookupSystemService.Controllers
             {
                 //Sonya21@yahoo.com
                 //Dovie4@hotmail.com
+                //Judd_Kilback@yahoo.com
+                //Lacy_Larkin@yahoo.com
 
                 var query = UserQueries.GetUserByEmail(_context, email);
                 var query2 = query.AsQueryable().ProjectTo<UserDto>(_mapper.ConfigurationProvider);
