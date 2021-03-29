@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using LookupSystem.DataAccess.Data;
+using LookupSystemService.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,9 +16,13 @@ namespace LookupSystemService
         private readonly ILogger _logger;
         private Timer _timer;
 
-        public TimedHostedService(ILogger<TimedHostedService> logger)
+
+        private readonly IServiceScopeFactory _scopeFactory;
+
+        public TimedHostedService(ILogger<TimedHostedService> logger, IServiceScopeFactory scopeFactory)
         {
             _logger = logger;
+            _scopeFactory = scopeFactory;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -30,6 +37,15 @@ namespace LookupSystemService
         private void DoWork(object state)
         {
             _logger.LogInformation($"Timed Background Service is working. {DateTime.Now}");
+            
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var userHandlerService = scope.ServiceProvider.GetRequiredService<IUserHandlerService>();
+                if(userHandlerService != null)
+                {
+                    userHandlerService.DeleteOlderData();
+                }
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
