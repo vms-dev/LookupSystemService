@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LookupSystem.BusinessLogic\LookupSystem.BusinessLogic.csproj" />
     <ProjectReference Include="..\LookupSystem.DataAccess\LookupSystem.DataAccess.csproj" />
   </ItemGroup>
 

@@ -1,11 +1,7 @@
 ﻿using LookupSystem.DataAccess.Data;
 using LookupSystem.DataAccess.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LookupSystem.DataAccess.Repositories
 {
@@ -23,8 +19,8 @@ namespace LookupSystem.DataAccess.Repositories
             var oldUser = FindUserOlderThan(countOfDays);
             if (oldUser.Any())
             {
-                //_context.Users.RemoveRange(oldUser);
-                //_context.SaveChanges();               
+                _context.Users.RemoveRange(oldUser);
+                _context.SaveChanges();
             }
         }
 
@@ -32,7 +28,7 @@ namespace LookupSystem.DataAccess.Repositories
         {
             var oldDate = DateTime.Now.AddDays(-countOfDays);
             var query = _context.Users.Where(u => u.Fired && u.DeleteDate < oldDate);
-            var queryStr = query.ToQueryString();
+            //var queryStr = query.ToQueryString();
             return query;
         }
     }

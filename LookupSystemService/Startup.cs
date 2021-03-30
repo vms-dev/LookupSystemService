@@ -9,10 +9,9 @@ using LookupSystemService.Mappings;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using System;
 using AutoMapper.Extensions.ExpressionMapping;
 using LookupSystem.DataAccess.Repositories;
-using LookupSystemService.Services;
+using LookupSystem.BusinessLogic.Services;
 
 namespace LookupSystemService
 {
