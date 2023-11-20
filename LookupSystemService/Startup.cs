@@ -9,8 +9,9 @@ using LookupSystemService.Mappings;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using System;
 using AutoMapper.Extensions.ExpressionMapping;
+using LookupSystem.DataAccess.Repositories;
+using LookupSystem.BusinessLogic.Services;
 
 namespace LookupSystemService
 {
@@ -55,6 +56,10 @@ namespace LookupSystemService
             services.AddDbContext<LookupSystemDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LookupSystemDbContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<DbInitializer>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserHandlerService, UserHandlerService>();
+
+            services.AddHostedService<TimedHostedService>();
 
         }
 
